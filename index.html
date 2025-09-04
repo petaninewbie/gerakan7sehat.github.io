@@ -1,6 +1,82 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+	<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Download</title>
+<style>
+  /* Styling dasar tombol */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropbtn {
+    background-color: #4CAF50; /* warna hijau */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .dropbtn:hover {
+    background-color: #45a049;
+  }
+
+  /* Konten dropdown, default disembunyikan */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    z-index: 1;
+  }
+
+  /* Item dropdown */
+  .dropdown-content a {
+    color: black;
+    padding: 10px 14px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .dropdown-content a:last-child {
+    border-bottom: none;
+  }
+
+  /* Hover pada item dropdown */
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Tampilkan dropdown saat hover pada container */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<div class="dropdown">
+  <button class="dropbtn">Download</button>
+  <div class="dropdown-content">
+    <a href="7 Kebiasaan Anak Indonesia Hebat_0_5.0.apk" download>Kelas X</a>
+    <a href="7 Kebiasaan Anak Indonesia Hebat_0_5.0.apk" download>Kelas XI</a>
+    </div>
+</div>
+
+</body>
+</html>
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentasi: Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</title>
@@ -605,6 +681,15 @@
                     </ul>
                 </li>
             </ol>
+            <button class="interactive-button" onclick="toggleContent('monitoringForms')">Lihat Contoh Formulir Pemantauan</button>
+            <div id="monitoringForms" class="hidden-content">
+                <h3>Contoh Formulir:</h3>
+                <ul>
+                    <li><a href="https://bit.ly/template7kaih" target="_blank">Formulir Penerapan Tujuh Kebiasaan bagi Murid SMA/SMK - Catatan Harian (Halaman Pertama)</a></li>
+                    <li><a href="https://bit.ly/template7kaih" target="_blank">Lembar Refleksi Orangtua/Wali - Catatan Harian (Halaman Kedua)</a></li>
+                    <li><a href="https://bit.ly/template7kaih" target="_blank">Formulir Penerapan Tujuh Kebiasaan bagi Guru (Bulanan)</a></li>
+                </ul>
+                <p><em>Catatan: Format dapat dimodifikasi sesuai kebutuhan sekolah.</em></p>
             </div>
         </section>
 
