@@ -213,6 +213,9 @@
              Di bawah ini saya sertakan juga salinan "teks lama persis" dalam komentar
              sehingga Anda dapat menggantinya dengan mudah (cari komentar START/END). -->
         <div id="homePanel" class="panel active" role="tabpanel">
+            
+
+            <!-- live content: copied from the original index.html body (ke dalam Home tab) -->
             <div class="container">
                 <header>
                     <h1>Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</h1>
@@ -718,7 +721,144 @@
                 </footer>
             </div>
 
-           <script>
+            <!-- ORIGINAL FILE (VERBATIM) START
+            --- Salinan persis isi file index.html yang Anda unggah. ---
+            (Anda dapat mengubah teks di antara tag komentar START/END lalu menyimpan file;
+            bagian komentar ini tidak mempengaruhi tampilan, ini hanya referensi cepat.)
+            <!DOCTYPE html>
+            <html lang="id">
+            <head>
+            	<meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Presentasi: Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</title>
+                <style>
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        background-color: #f4f4f4;
+                        color: #333;
+                        line-height: 1.6;
+                    }
+                    .container {
+                        max-width: 900px;
+                        margin: 20px auto;
+                        background-color: #fff;
+                        padding: 30px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    }
+                    header {
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 2px solid #4CAF50;
+                        margin-bottom: 30px;
+                    }
+                    header h1 {
+                        color: #2E8B57;
+                        font-size: 2.5em;
+                        margin-bottom: 10px;
+                    }
+                    header p {
+                        color: #666;
+                        font-size: 1.1em;
+                    }
+                    section {
+                        margin-bottom: 40px;
+                        padding: 20px;
+                        background-color: #e8f5e9;
+                        border-left: 5px solid #4CAF50;
+                        border-radius: 5px;
+                    }
+                    section h2 {
+                        color: #4CAF50;
+                        font-size: 1.8em;
+                        margin-top: 0;
+                        margin-bottom: 15px;
+                    }
+                    section h3 {
+                        color: #388E3C;
+                        font-size: 1.4em;
+                        margin-top: 20px;
+                        margin-bottom: 10px;
+                    }
+                    ul {
+                        list-style-type: disc;
+                        margin-left: 20px;
+                        padding-left: 0;
+                    }
+                    ol {
+                        list-style-type: decimal;
+                        margin-left: 20px;
+                        padding-left: 0;
+                    }
+                    li {
+                        margin-bottom: 8px;
+                    }
+                    .highlight {
+                        background-color: #fff9c4;
+                        padding: 5px 10px;
+                        border-radius: 4px;
+                        font-weight: bold;
+                        color: #c09800;
+                    }
+                    .interactive-button {
+                        display: block;
+                        width: fit-content;
+                        margin: 20px auto;
+                        padding: 12px 25px;
+                        background-color: #4CAF50;
+                        color: white;
+                        text-align: center;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        font-size: 1.1em;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    }
+                    .interactive-button:hover {
+                        background-color: #45a049;
+                    }
+                    .hidden-content {
+                        display: none;
+                        margin-top: 15px;
+                        padding: 15px;
+                        background-color: #f0f4f0;
+                        border-left: 3px solid #388E3C;
+                        border-radius: 5px;
+                    }
+                    footer {
+                        text-align: center;
+                        padding-top: 20px;
+                        border-top: 1px solid #ddd;
+                        margin-top: 30px;
+                        color: #777;
+                        font-size: 0.9em;
+                    }
+                    .image-container {
+                        text-align: center;
+                        margin: 20px 0;
+                    }
+                    .image-container img {
+                        max-width: 100%;
+                        height: auto;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <header>
+                        <h1>Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</h1>
+                        <p>Panduan Penerapan untuk Guru dan Satuan Pendidikan pada Sekolah Menengah Atas/Kejuruan</p>
+                    </header>
+
+                    <!-- ... seluruh isi body Anda asli (dipangkas di komentar ini untuk singkat) ... -->
+
+                </div>
+
+                <script>
                     function toggleContent(id) {
                         var element = document.getElementById(id);
                         if (element.style.display === "none" || element.style.display === "") {
@@ -730,7 +870,8 @@
                 </script>
             </body>
             </html>
-            <!-- APLIKASI PANEL: menampilkan halaman web eksternal dalam iframe -->
+            
+        <!-- APLIKASI PANEL: menampilkan halaman web eksternal dalam iframe -->
         <div id="appPanel" class="panel" role="tabpanel" aria-hidden="true">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;">
                 <div>
@@ -765,72 +906,6 @@
             });
         });
 
-		/* ====== Disable right-click and common DevTools shortcuts (added) ======
-            Note: this only raises the barrier for casual users. Determined users
-            can still view source / open DevTools. Keep that in mind.
-            */
-            (function disableInspectAndContextmenu(){
-                // Disable right-click context menu
-                document.addEventListener('contextmenu', function (e) {
-                    try { e.preventDefault(); } catch (err) {}
-                    return false;
-                }, true);
-
-                // Disable selection via keyboard shortcuts (optional)
-                document.addEventListener('selectstart', function(e){
-                    // allow selection normally, but block programmatic context-selection if desired
-                }, true);
-
-                // Block typical keys that open DevTools or view-source
-                document.addEventListener('keydown', function (e) {
-                    try {
-                        // F12
-                        if (e.key === 'F12') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+Shift+I / J / C  (Chrome/Edge)
-                        if (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j' || e.key.toLowerCase() === 'c')) {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+U (view-source / view page source)
-                        if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'u') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+Shift+K (Firefox console)
-                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'k') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+Shift+C (element inspector)
-                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Cmd on Mac equivalents
-                        if (navigator.platform && /Mac/i.test(navigator.platform)) {
-                            if (e.metaKey && e.altKey && e.key.toLowerCase() === 'i') { e.preventDefault(); e.stopPropagation(); return false; }
-                        }
-                    } catch (err) { /* ignore */ }
-                }, true);
-
-                // Also try to prevent opening via contextmenu on specific elements (images/links)
-                ['img','a','svg','button','input','textarea'].forEach(tag => {
-                    document.querySelectorAll(tag).forEach(el => {
-                        el.addEventListener('contextmenu', function(e){
-                            try { e.preventDefault(); } catch (err) {}
-                            return false;
-                        }, true);
-                    });
-                });
-
-                // Defensive: periodically re-attach contextmenu block (in case other scripts add handlers)
-                setInterval(() => {
-                    try {
-                        if (!document._ctx_block_attached) {
-                            document.addEventListener('contextmenu', function (e) { try { e.preventDefault(); } catch (z){}; return false; }, true);
-                            document._ctx_block_attached = true;
-                        }
-                    } catch(e){}
-                }, 3000);
-            })();
         // Reuse toggleContent function (same behavior as original)
         function toggleContent(id) {
             var element = document.getElementById(id);
@@ -844,9 +919,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
