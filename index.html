@@ -23,6 +23,7 @@
             background-color: var(--bg);
             color: #333;
             line-height: 1.6;
+            overflow-y: scroll; /* Mencegah layout bergeser saat scrollbar muncul/hilang */
         }
 
         /* Tab navigation */
@@ -34,21 +35,30 @@
             padding: 0 15px;
         }
         .tab {
-            background: var(--card);
+            background: #e0e0e0; /* Sedikit lebih gelap agar terlihat beda dengan bg */
             border-radius: 8px 8px 0 0;
-            padding: 10px 16px;
+            padding: 12px 20px;
             cursor: pointer;
             border: 1px solid rgba(0,0,0,0.06);
+            border-bottom: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.2s ease;
+        }
+        .tab:hover {
+            background: #eaeaea;
         }
         .tab.active {
-            background: linear-gradient(180deg, #fff, #f7fff7);
-            border-bottom: 2px solid var(--accent);
+            background: var(--card);
+            border-top: 3px solid var(--accent);
             color: var(--accent-dark);
-            font-weight: 600;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            font-weight: 700;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 2; /* Agar menutupi border panel */
         }
 
         /* Tab panels */
@@ -61,16 +71,24 @@
             display: none;
             background: var(--card);
             border-radius: 0 8px 8px 8px;
+            /* Khusus panel app agar sudut kiri atas lurus mengikuti tab */
+            border-top-left-radius: 0; 
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.06);
             border: 1px solid rgba(0,0,0,0.06);
-            margin-top: -1px;
+            min-height: 80vh; /* Tinggi minimal agar enak dilihat */
         }
         .panel.active {
             display: block;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-        /* Keep original styles for the content (copied from original file) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Content Styles */
         header {
             text-align: center;
             padding-bottom: 20px;
@@ -138,6 +156,7 @@
             font-size: 1.1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            border: none;
         }
         .interactive-button:hover {
             background-color: #45a049;
@@ -169,54 +188,50 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* iframe (Aplikasi) */
+        /* --- IFRAME STYLING (Untuk Tab Aplikasi) --- */
+        .app-container {
+            width: 100%;
+            height: 80vh; /* Menggunakan 80% tinggi layar */
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            position: relative;
+        }
         .app-frame {
             width: 100%;
-            height: 75vh;
+            height: 100%;
             border: none;
-            border-radius: 6px;
-            background: #fff;
+            display: block;
+        }
+        
+        /* Loading Placeholder (Optional, agar tidak putih polos saat loading) */
+        .app-loading {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #888;
+            z-index: 0;
         }
 
         /* Small screens adjustments */
         @media (max-width: 640px) {
             header h1 { font-size: 1.6rem; }
-            .tab { padding: 8px 10px; font-size: 0.95rem; }
-        }
-
-        /* Marker for original-file block (visible label only) */
-        .original-note {
-            display: block;
-            font-size: 0.85rem;
-            color: #555;
-            margin-bottom: 10px;
-        }
-        .edit-hint {
-            background: #fffbea;
-            border-left: 4px solid #ffd54f;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            margin-bottom: 12px;
+            .tab { padding: 10px 15px; font-size: 0.9rem; flex: 1; justify-content: center; }
+            .panels { padding: 0 10px; }
+            .panel { padding: 15px; }
+            .app-container { height: 70vh; }
         }
     </style>
 </head>
 <body>
-    <!-- Tab navigation -->
     <div class="tabs" role="tablist" aria-label="Navigasi">
-        <button class="tab active" role="tab" aria-selected="true" data-panel="homePanel">Home</button>
-        <button class="tab" role="tab" data-panel="appPanel">Aplikasi</button>
+        <button class="tab active" role="tab" aria-selected="true" data-panel="homePanel">Materi</button>
+        <button class="tab" role="tab" data-panel="appPanel">Aplikasi Jurnal</button>
     </div>
 
     <div class="panels">
-        <!-- HOME PANEL: berisi seluruh konten index.html yang Anda unggah.
-             Di bawah ini saya sertakan juga salinan "teks lama persis" dalam komentar
-             sehingga Anda dapat menggantinya dengan mudah (cari komentar START/END). -->
         <div id="homePanel" class="panel active" role="tabpanel">
-            
-
-            <!-- live content: copied from the original index.html body (ke dalam Home tab) -->
-            <div class="container">
+            <div class="container-content">
                 <header>
                     <h1>Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</h1>
                     <p>Panduan Penerapan untuk Guru dan Satuan Pendidikan pada Sekolah Menengah Atas/Kejuruan</p>
@@ -230,777 +245,120 @@
                         <li><span class="highlight">Kebiasaan buruk</span> dapat membawa dampak sebaliknya.</li>
                     </ul>
                     <p>Dari berbagai perspektif (agama, sosiologi, psikologi, neuroscience), kebiasaan adalah elemen kunci dalam membangun karakter dan mencapai kesuksesan.</p>
-                    <button class="interactive-button" onclick="toggleContent('whyHabitDetails')">Pelajari Lebih Lanjut tentang Pentingnya Kebiasaan</button>
+                    <button class="interactive-button" onclick="toggleContent('whyHabitDetails')">Pelajari Lebih Lanjut</button>
                     <div id="whyHabitDetails" class="hidden-content">
                         <h3>Perspektif Kebiasaan:</h3>
                         <ul>
                             <li><strong>Agama:</strong> Menekankan konsistensi ibadah sebagai bentuk hubungan dengan Tuhan dan penanaman nilai moral.</li>
-                            <li><strong>Sosiologi (Pierre Bourdieu - Konsep Habitus):</strong> Kebiasaan terbentuk melalui norma, etika, dan nilai-nilai di komunitas tertentu, menyebar menjadi pola interaksi sosial.</li>
-                            <li><strong>Psikologi (Charles Duhigg - The Power of Habit):</strong> Konsep lingkaran kebiasaan (cue, routine, reward) memungkinkan perubahan kebiasaan tidak diinginkan dengan mengganti rutinitas.</li>
-                            <li><strong>Neuroscience:</strong> Kebiasaan berkaitan dengan ganglia basalis, bagian otak yang mengatur pola perilaku otomatis. Semakin sering dilakukan, semakin kuat jalur sarafnya.</li>
+                            <li><strong>Sosiologi (Pierre Bourdieu):</strong> Kebiasaan terbentuk melalui norma, etika, dan nilai-nilai di komunitas.</li>
+                            <li><strong>Psikologi (Charles Duhigg):</strong> Konsep lingkaran kebiasaan (cue, routine, reward).</li>
+                            <li><strong>Neuroscience:</strong> Kebiasaan berkaitan dengan ganglia basalis dan jalur saraf otak.</li>
                         </ul>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</h2>
-                    <p>Gerakan ini diluncurkan pada 27 Desember 2024 sebagai langkah strategis menuju generasi emas Indonesia 2045, bertujuan membentuk anak-anak Indonesia dengan karakter yang tangguh dan berdaya saing.</p>
+                    <h2>Tujuh Kebiasaan Anak Indonesia Hebat</h2>
+                    <p>Langkah strategis menuju generasi emas Indonesia 2045, membentuk karakter tangguh dan berdaya saing.</p>
                     <ol>
-                        <li><strong>Bangun Pagi:</strong> Menanamkan kedisiplinan dan kesiapan menghadapi hari.</li>
-                        <li><strong>Beribadah:</strong> Membentuk pribadi yang memiliki nilai spiritual kuat.</li>
-                        <li><strong>Berolahraga:</strong> Mendorong kebugaran fisik dan kesehatan mental.</li>
-                        <li><strong>Makan Sehat dan Bergizi:</strong> Menunjang pertumbuhan dan kecerdasan.</li>
-                        <li><strong>Gemar Belajar:</strong> Menumbuhkan rasa ingin tahu dan kreativitas.</li>
-                        <li><strong>Bermasyarakat:</strong> Mengajarkan kepedulian dan tanggung jawab sosial.</li>
-                        <li><strong>Tidur Cepat:</strong> Memastikan kualitas istirahat yang baik.</li>
+                        <li><strong>Bangun Pagi:</strong> Kedisiplinan dan kesiapan hari.</li>
+                        <li><strong>Beribadah:</strong> Nilai spiritual kuat.</li>
+                        <li><strong>Berolahraga:</strong> Kebugaran fisik dan mental.</li>
+                        <li><strong>Makan Sehat:</strong> Menunjang pertumbuhan.</li>
+                        <li><strong>Gemar Belajar:</strong> Rasa ingin tahu dan kreativitas.</li>
+                        <li><strong>Bermasyarakat:</strong> Kepedulian sosial.</li>
+                        <li><strong>Tidur Cepat:</strong> Kualitas istirahat baik.</li>
                     </ol>
-                    <button class="interactive-button" onclick="toggleContent('giatLogo')">Lihat Logo GiatTKAIH dan Maknanya</button>
+                    <button class="interactive-button" onclick="toggleContent('giatLogo')">Filosofi Logo</button>
                     <div id="giatLogo" class="hidden-content">
-                        <h3>Logo Gerakan Tujuh Kebiasaan Anak Indonesia Hebat:</h3>
-                        <div class="image-container">
-                            <!-- Placeholder for the logo image. In a real scenario, you would embed the actual image. -->
-                            <img src="logo.png" width="200" height="300">
-                        </div>
+                        <h3>Makna Logo GiatTKAIH:</h3>
                         <ul>
-                            <li><strong>Kepala berwarna biru:</strong> Mengutamakan ilmu pengetahuan dan semangat belajar terus menerus.</li>
-                            <li><strong>Badan berwarna hijau:</strong> Melambangkan kesehatan fisik, mental, emosional, dan spiritual.</li>
-                            <li><strong>Bola cahaya berwarna emas yang diangkat dengan tangan kanan:</strong> Melambangkan karakter dan budi pekerti luhur sebagai cahaya yang menerangi perjalanan menuju Indonesia Emas 2045.</li>
-                            <li><strong>Tujuh pancaran cahaya:</strong> Menggambarkan tujuh kebiasaan baik yang tidak hanya menerangi diri sendiri tetapi juga mencerahkan lingkungan sekitarnya.</li>
+                            <li><strong>Kepala Biru:</strong> Ilmu pengetahuan & semangat belajar.</li>
+                            <li><strong>Badan Hijau:</strong> Kesehatan fisik, mental, & spiritual.</li>
+                            <li><strong>Bola Emas:</strong> Karakter & budi pekerti luhur (Indonesia Emas 2045).</li>
+                            <li><strong>Tujuh Cahaya:</strong> Tujuh kebiasaan baik yang menerangi lingkungan.</li>
                         </ul>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Detail Kebiasaan: Bangun Pagi</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Aktivitas bangun dari tidur pada waktu pagi hari, biasanya antara pukul 04.00 hingga 06.00.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Meningkatkan konsentrasi dan fokus.</li>
-                        <li>Menjaga kesehatan fisik dan mental.</li>
-                        <li>Mengurangi risiko depresi dan kecemasan.</li>
-                        <li>Membentuk disiplin diri dan tanggung jawab.</li>
-                        <li>Mendukung kesuksesan akademik dan penguatan karakter.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('bangunPagiManfaat')">Manfaat Bangun Pagi</button>
-                    <div id="bangunPagiManfaat" class="hidden-content">
-                        <h3>Manfaat Bangun Pagi:</h3>
-                        <ul>
-                            <li>Meningkatkan kedisiplinan.</li>
-                            <li>Meningkatkan kemampuan mengelola waktu.</li>
-                            <li>Meningkatkan kemampuan mengendalikan diri.</li>
-                            <li>Meningkatkan keseimbangan jiwa dan raga.</li>
-                            <li>Mendukung kesuksesan dalam berbagai aspek kehidupan.</li>
-                            <li>Mendukung kesehatan fisik, mental, dan pola hidup yang lebih teratur.</li>
-                            <li>Membentuk jam biologis teratur anak sejak dini.</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('bangunPagiPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="bangunPagiPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Bangun Pagi:</h3>
-                        <ul>
-                            <li>Membuat rutinitas pagi di sekolah (senam, membaca).</li>
-                            <li>Membangun kesadaran murid melalui diskusi.</li>
-                            <li>Memberikan tugas yang menarik yang harus diselesaikan di pagi hari.</li>
-                            <li>Memberikan contoh yang baik (guru datang lebih awal).</li>
-                            <li>Menciptakan lingkungan yang mendukung (poster manfaat bangun pagi).</li>
-                            <li>Memberikan apresiasi kepada murid.</li>
-                            <li>Mendorong keterlibatan orang tua (seminar, komunikasi).</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Datang lebih awal, menyapa murid, mengikuti senam.</li>
-                            <li><strong>Pembimbing:</strong> Menceritakan pengalaman, menjelaskan manfaat, berdiskusi tentang pengelolaan waktu.</li>
-                            <li><strong>Motivator:</strong> Memotivasi, memberikan apresiasi, menceritakan kisah sukses tokoh panutan.</li>
-                            <li><strong>Evaluator:</strong> Berkolaborasi dengan orang tua/wali, menandatangani formulir pemantauan.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Tata tertib datang tepat waktu, prosedur penyambutan pagi, sistem penghargaan.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Mengundang narasumber, membuat poster/media publikasi.</li>
-                            <li><strong>Kolaborasi:</strong> Melibatkan orang tua dalam pembimbingan dan pemantauan.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Detail Kebiasaan: Beribadah</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Bentuk pengabdian, penghormatan, dan ketaatan seseorang kepada Tuhan sesuai dengan ajaran agama atau kepercayaan yang dianutnya.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Memperkuat spiritual dan moral.</li>
-                        <li>Menenangkan hati dan meningkatkan kesehatan mental.</li>
-                        <li>Meningkatkan kesadaran akan tujuan hidup.</li>
-                        <li>Menumbuhkan solidaritas dan kepedulian sosial.</li>
-                        <li>Membantu pengembangan karakter.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('beribadahManfaat')">Manfaat Beribadah</button>
-                    <div id="beribadahManfaat" class="hidden-content">
-                        <h3>Manfaat Beribadah:</h3>
-                        <ul>
-                            <li>Mendekatkan hubungan individu kepada Tuhan.</li>
-                            <li>Meningkatkan nilai-nilai etika, moral, spiritual, dan sosial.</li>
-                            <li>Meningkatkan pemahaman tujuan hidup dan arah yang bermakna.</li>
-                            <li>Meningkatkan kebersamaan dan solidaritas.</li>
-                            <li>Meningkatkan kapasitas diri secara berkelanjutan.</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('beribadahPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="beribadahPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Beribadah:</h3>
-                        <ul>
-                            <li>Mengintegrasikan nilai-nilai agama dalam pembelajaran.</li>
-                            <li>Menciptakan lingkungan yang mendukung ibadah (ruang ibadah, pengingat waktu).</li>
-                            <li>Mengadakan kegiatan keagamaan yang menarik (klub, perayaan hari besar).</li>
-                            <li>Memberikan motivasi dan inspirasi dari tokoh agama/publik.</li>
-                            <li>Kolaborasi dengan orang tua dan tokoh agama.</li>
-                            <li>Menggunakan lagu-lagu tentang ibadah.</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Konsisten beribadah, menghubungkan aktivitas kelas dengan nilai keagamaan.</li>
-                            <li><strong>Pembimbing:</strong> Menjelaskan pentingnya ibadah, membimbing praktik ibadah yang benar, mengintegrasikan nilai agama dalam mata pelajaran.</li>
-                            <li><strong>Motivator:</strong> Memotivasi dengan ikhlas dan rasa syukur, memberikan pujian/apresiasi.</li>
-                            <li><strong>Evaluator:</strong> Menandatangani formulir pemantauan, berkolaborasi dengan orang tua/wali.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Berdoa bersama, ekstrakurikuler keagamaan, sistem penghargaan.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Mengundang narasumber, media publikasi, lomba keagamaan.</li>
-                            <li><strong>Sarana dan Prasarana:</strong> Menyediakan tempat ibadah dan fasilitas pendukung.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Detail Kebiasaan: Berolahraga</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Aktivitas fisik yang dilakukan untuk meningkatkan kebugaran tubuh, menjaga kesehatan, dan meningkatkan kualitas hidup.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Menjaga kesehatan fisik dan mendukung kesehatan mental.</li>
-                        <li>Menjaga kebugaran tubuh.</li>
-                        <li>Meningkatkan potensi diri (fisik, mental, sosial).</li>
-                        <li>Meningkatkan nilai sportivitas.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('berolahragaManfaat')">Manfaat Berolahraga</button>
-                    <div id="berolahragaManfaat" class="hidden-content">
-                        <h3>Manfaat Berolahraga:</h3>
-                        <ul>
-                            <li>Mengurangi stres, kecemasan, dan meningkatkan kualitas pikiran.</li>
-                            <li>Menciptakan harmoni antara tubuh dan pikiran.</li>
-                            <li>Menjaga tubuh tetap aktif dan bugar.</li>
-                            <li>Mendukung kesuksesan dalam berbagai aspek kehidupan.</li>
-                            <li>Mengajarkan sikap menghormati orang lain, kejujuran, dan keadilan.</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('berolahragaPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="berolahragaPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Berolahraga:</h3>
-                        <ul>
-                            <li>Mengadakan kegiatan olahraga yang menarik (kompetisi, turnamen).</li>
-                            <li>Menetapkan kegiatan olahraga bersama (senam pagi, jalan sehat).</li>
-                            <li>Kelas cerita inspiratif tentang atlet.</li>
-                            <li>Kolaborasi dengan orang tua.</li>
-                            <li>Menciptakan program olahraga yang variatif (yoga, tari, panah).</li>
-                            <li>Menggunakan lagu-lagu tentang olahraga.</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Membiasakan diri berolahraga, terlibat senam pagi.</li>
-                            <li><strong>Pembimbing:</strong> Menjelaskan pentingnya olahraga, mengatur jadwal rutin, membina klub olahraga.</li>
-                            <li><strong>Motivator:</strong> Memotivasi, memberikan penghargaan, menyediakan fasilitas inklusif, memberikan contoh olahragawan panutan.</li>
-                            <li><strong>Evaluator:</strong> Memperhatikan kebiasaan olahraga murid, berkolaborasi dengan orang tua.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Senam pagi minimal 2x seminggu, sistem apresiasi.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Mengundang narasumber, poster/media publikasi, kompetisi olahraga.</li>
-                            <li><strong>Sarana dan Prasarana:</strong> Menyediakan fasilitas olahraga yang memadai dan mudah diakses.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Detail Kebiasaan: Makan Sehat dan Bergizi</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Pola makan teratur dengan mengonsumsi makanan yang mengandung nutrisi lengkap dan seimbang untuk memenuhi kebutuhan tubuh, sehingga mendukung kesehatan fisik dan mental.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Memenuhi kebutuhan nutrisi dan tumbuh kembang.</li>
-                        <li>Menjaga kesehatan anak.</li>
-                        <li>Mendukung pertumbuhan dan perkembangan tubuh serta meningkatkan daya tahan tubuh.</li>
-                        <li>Membentuk disiplin dalam memilih makanan yang baik.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('makanSehatManfaat')">Manfaat Makan Sehat dan Bergizi</button>
-                    <div id="makanSehatManfaat" class="hidden-content">
-                        <h3>Manfaat Makan Sehat dan Bergizi:</h3>
-                        <ul>
-                            <li>Menjaga kesehatan fisik sebagai investasi jangka panjang.</li>
-                            <li>Memaksimalkan potensi tubuh dan pikiran.</li>
-                            <li>Menjaga tubuh tetap sehat sebagai tanggung jawab individu.</li>
-                            <li>Meningkatkan kemandirian.</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('makanSehatPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="makanSehatPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Makan Sehat dan Bergizi:</h3>
-                        <ul>
-                            <li>Mengadakan program edukasi seputar gizi.</li>
-                            <li>Membuat tantangan makan sehat ("7 Hari Sarapan Sehat").</li>
-                            <li>Mengajak murid membawa bekal sehat.</li>
-                            <li>Mengintegrasikan materi gizi dalam mata pelajaran.</li>
-                            <li>Melibatkan kantin sekolah untuk menyediakan pilihan sehat.</li>
-                            <li>Melibatkan murid dalam kampanye (poster "isi piringku").</li>
-                            <li>Melibatkan orang tua/wali (webinar, grup diskusi).</li>
-                            <li>Menggunakan lagu-lagu tentang makan sehat.</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Memberikan contoh langsung makan sehat.</li>
-                            <li><strong>Pembimbing:</strong> Menjelaskan manfaat, mengajarkan nutrisi dan membaca label, mengajak kampanye.</li>
-                            <li><strong>Motivator:</strong> Memotivasi dengan penjelasan dampak positif pada prestasi, memberikan apresiasi.</li>
-                            <li><strong>Evaluator:</strong> Bermitra dengan orang tua, menandatangani formulir pemantauan.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Sistem apresiasi, kerja sama dengan orang tua.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Mengundang narasumber, media publikasi, aktivitas pendukung.</li>
-                            <li><strong>Sarana dan Prasarana:</strong> Kerja sama dengan kantin untuk menyediakan makanan sehat berlabel khusus, menciptakan lingkungan sehat.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Detail Kebiasaan: Gemar Belajar</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Kebiasaan atau sikap seseorang untuk terus menambah pengetahuan, keterampilan, atau wawasan baru dengan rasa senang, antusias, dan berkeinginan kuat.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Pengembangan diri secara berkelanjutan.</li>
-                        <li>Meningkatkan kreativitas, berpikir kritis, dan tanggung jawab.</li>
-                        <li>Membantu anak menjadi cerdas, kreatif, dan berkarakter.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('gemarBelajarManfaat')">Manfaat Gemar Belajar</button>
-                    <div id="gemarBelajarManfaat" class="hidden-content">
-                        <h3>Manfaat Gemar Belajar:</h3>
-                        <ul>
-                            <li><strong>Pengembangan Diri:</strong> Mengumpulkan pengetahuan, mengembangkan karakter, keterampilan, dan kebijaksanaan.</li>
-                            <li><strong>Menumbuhkan Kreativitas dan Imajinasi:</strong> Memupuk keberanian bertanya, mencoba hal baru, berpikir di luar kebiasaan, menciptakan inovasi.</li>
-                            <li><strong>Menemukan Kebenaran dan Pengetahuan:</strong> Memahami dunia secara lebih objektif dan makna di balik fenomena.</li>
-                            <li><strong>Membentuk Kerendahan Hati dan Empati:</strong> Menyadari banyak hal yang belum diketahui, memahami pengalaman orang lain, budaya, dan cara pandang yang beragam.</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('gemarBelajarPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="gemarBelajarPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Gemar Belajar:</h3>
-                        <ul>
-                            <li>Menumbuhkan rasa ingin tahu (dorong bertanya, mencari sumber).</li>
-                            <li>Membuat jadwal belajar yang teratur.</li>
-                            <li>Belajar dengan metode yang menyenangkan (video, mind mapping, eksperimen, diskusi).</li>
-                            <li>Bergabung dengan kelompok belajar/komunitas.</li>
-                            <li>Membiasakan membaca berbagai sumber.</li>
-                            <li>Memanfaatkan teknologi secara bertanggung jawab.</li>
-                            <li>Menetapkan tujuan belajar yang jelas.</li>
-                            <li>Mengembangkan pola pikir positif terhadap belajar.</li>
-                            <li>Menggunakan lagu-lagu tentang gemar belajar.</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Meningkatkan kompetensi diri, memberikan contoh praktik langsung.</li>
-                            <li><strong>Pembimbing:</strong> Membuat jadwal belajar konsisten, mengenali minat murid, menghubungkan konsep pelajaran dengan kehidupan sehari-hari, mengajarkan cara belajar efektif.</li>
-                            <li><strong>Motivator:</strong> Memutar video/lagu, menciptakan lingkungan kelas nyaman, memotivasi bertanya, memberikan pujian, menceritakan tokoh inspiratif.</li>
-                            <li><strong>Evaluator:</strong> Menandatangani formulir pemantauan, berkolaborasi dengan orang tua.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Menyediakan ekstrakurikuler karya ilmiah, sistem penghargaan.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Poster/media publikasi, mengundang narasumber, Kelas Inspirasi, melibatkan murid dalam lomba/kompetisi.</li>
-                            <li><strong>Sarana dan Prasarana:</strong> Menyediakan ruang belajar, perpustakaan, laboratorium, dan fasilitas pendukung lainnya.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Detail Kebiasaan: Bermasyarakat</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Hidup berdampingan dalam suatu kelompok atau komunitas, di mana individu saling berinteraksi, bekerja sama, dan berperan sosial untuk menciptakan kehidupan yang harmonis dan saling mendukung.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Mengembangkan keterampilan sosial, empati, dan kepemimpinan.</li>
-                        <li>Menanamkan nilai gotong royong, kerja sama, toleransi, keadilan, dan kesetaraan.</li>
-                        <li>Meningkatkan rasa tanggung jawab lingkungan untuk kesejahteraan bersama.</li>
-                        <li>Membawa kegembiraan melalui interaksi sosial yang positif.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('bermasyarakatManfaat')">Manfaat Bermasyarakat</button>
-                    <div id="bermasyarakatManfaat" class="hidden-content">
-                        <h3>Manfaat Bermasyarakat:</h3>
-                        <ul>
-                            <li>Menumbuhkembangkan nilai gotong royong dan kerja sama.</li>
-                            <li>Menumbuhkembangkan nilai saling menghormati dan toleransi.</li>
-                            <li>Menumbuhkembangkan nilai keadilan dan kesetaraan.</li>
-                            <li>Meningkatkan rasa tanggung jawab terhadap lingkungan.</li>
-                            <li>Menciptakan kegembiraan.</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('bermasyarakatPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="bermasyarakatPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Bermasyarakat:</h3>
-                        <ul>
-                            <li>Aktif dalam kegiatan sekolah.</li>
-                            <li>Gotong royong dan kerja sama.</li>
-                            <li>Saling menghormati dan toleransi.</li>
-                            <li>Berperan aktif dalam kegiatan sosial.</li>
-                            <li>Berkomunikasi yang baik.</li>
-                            <li>Mengikuti norma dan aturan.</li>
-                            <li>Membangun jaringan sosial yang positif.</li>
-                            <li>Menggunakan lagu-lagu tentang bermasyarakat.</li>
-                            <li>Permainan tradisional sebagai sarana interaksi sosial.</li>
-                            <li>Beribadah di tempat ibadah.</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Aktif bermasyarakat, terlibat kerja bakti/sosial.</li>
-                            <li><strong>Pembimbing:</strong> Melibatkan murid dalam kegiatan sosial/lingkungan, diskusi isu sosial, mengajarkan berbagi/tolong-menolong, mengajarkan tata krama dan budaya mengantri.</li>
-                            <li><strong>Motivator:</strong> Memotivasi pertemanan sehat, terlibat organisasi sekolah, memberikan apresiasi.</li>
-                            <li><strong>Evaluator:</strong> Menandatangani formulir pemantauan, berkolaborasi dengan orang tua.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Program mentoring, membersihkan lingkungan sekolah, sistem penghargaan.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Mengundang narasumber, poster/media publikasi, Kelas Inspirasi.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Detail Kebiasaan: Tidur Cepat</h2>
-                    <h3>Definisi:</h3>
-                    <ul>
-                        <li>Kebiasaan tidur tepat waktu secara teratur dan tidak larut malam, disesuaikan dengan kebutuhan ideal waktu tidur anak agar dapat bangun pagi.</li>
-                    </ul>
-                    <h3>Pentingnya:</h3>
-                    <ul>
-                        <li>Mendapatkan tidur yang cukup dan berkualitas.</li>
-                        <li>Membantu regenerasi dan pemulihan tubuh serta otak.</li>
-                        <li>Meningkatkan semangat untuk belajar dan bermain.</li>
-                    </ul>
-                    <button class="interactive-button" onclick="toggleContent('tidurCepatManfaat')">Manfaat Tidur Cepat</button>
-                    <div id="tidurCepatManfaat" class="hidden-content">
-                        <h3>Manfaat Tidur Cepat:</h3>
-                        <ul>
-                            <li>Menjaga organ tubuh pulih dan berfungsi optimal.</li>
-                            <li>Memulihkan mental dan emosional (mengurangi stres, menenangkan pikiran).</li>
-                            <li>Menjaga keseimbangan antara aktivitas dan ketenangan.</li>
-                            <li>Meningkatkan produktivitas (berpikir jernih, kreatif).</li>
-                        </ul>
-                    </div>
-                    <button class="interactive-button" onclick="toggleContent('tidurCepatPenerapan')">Cara Penerapan & Peran Guru/Satuan Pendidikan</button>
-                    <div id="tidurCepatPenerapan" class="hidden-content">
-                        <h3>Cara Penerapan Kebiasaan Tidur Cepat:</h3>
-                        <ul>
-                            <li>Membuat jadwal tidur yang konsisten.</li>
-                            <li>Menciptakan rutinitas malam yang menenangkan (matikan perangkat elektronik, membaca buku fisik).</li>
-                            <li>Menciptakan lingkungan tidur yang nyaman (gelap, tenang, sejuk).</li>
-                            <li>Mengatur pola makan dan minum (hindari kafein/gula sore hari).</li>
-                            <li>Berolahraga secara teratur (hindari dekat waktu tidur).</li>
-                            <li>Menggunakan lagu-lagu relaksasi/tidur.</li>
-                        </ul>
-                        <h3>Peran Guru:</h3>
-                        <ul>
-                            <li><strong>Teladan:</strong> Memberi contoh tidur cepat, tidak memberi tugas yang membuat begadang.</li>
-                            <li><strong>Pembimbing:</strong> Mengingatkan pentingnya tidur cukup, menjelaskan manfaat, mengajak diskusi.</li>
-                            <li><strong>Motivator:</strong> Mengapresiasi murid yang mengatur waktu, mendorong tantangan "Tidur 7-9 Jam".</li>
-                            <li><strong>Evaluator:</strong> Berkolaborasi dengan orang tua, berkomunikasi saat menandatangani formulir pemantauan.</li>
-                        </ul>
-                        <h3>Peran Satuan Pendidikan:</h3>
-                        <ul>
-                            <li><strong>Menetapkan Kebijakan:</strong> Pemberian apresiasi, kerja sama dengan orang tua, menghindari jadwal sekolah yang terlalu larut.</li>
-                            <li><strong>Edukasi dan Sosialisasi:</strong> Mengundang narasumber, poster/video/media publikasi, membahas pola tidur sehat dalam bimbingan konseling.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Hal Penting Lainnya</h2>
-                    <h3>Prinsip 3S (Screen Time, Screen Break, Screen Zone):</h3>
-                    <ul>
-                        <li><strong>Screen Time:</strong> Mengatur jadwal penggunaan gadget dengan batasan waktu tertentu.</li>
-                        <li><strong>Screen Break:</strong> Melakukan jeda aktivitas gadget untuk bermain, berinteraksi, atau bersosialisasi.</li>
-                        <li><strong>Screen Zone:</strong> Menetapkan wilayah bebas gadget di 3 ruangan rumah (ruang tidur, ruang makan, kamar mandi).</li>
-                        <li>Rekomendasi waktu penggunaan layar (WHO, IDAI, Kemenkes):
-                            <ul>
-                                <li>Usia &lt; 2 tahun: 0 jam.</li>
-                                <li>Usia 2-5 tahun: 1 jam/hari.</li>
-                                <li>Usia &gt; 6 tahun: Tidak melebihi 2-3 jam/hari (dengan konten edukatif dan bimbingan orang tua).</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <h3>Isi Piringku:</h3>
-                    <ul>
-                        <li>Pedoman gizi seimbang dari Kementerian Kesehatan.</li>
-                        <li>Setengah piring diisi sayur dan buah, setengah lainnya makanan pokok dan lauk pauk.</li>
-                        <li>Ajakan mengonsumsi 8 gelas air/hari, aktivitas fisik 30 menit/hari, dan cuci tangan.</li>
-                    </ul>
-                    <h3>Kebutuhan Ideal Waktu Tidur (Kemenkes):</h3>
-                    <div class="image-container">
-                        <!-- Placeholder for the sleep duration image. In a real scenario, you would embed the actual image. -->
-                        <img src="tidur.png" alt="Kebutuhan Tidur Ideal">
-                    </div>
-                    <h3>Tips Tidur Lebih Berkualitas (Matthew Walker - Why We Sleep):</h3>
-                    <ul>
-                        <li><strong>Suhu:</strong> Turunkan suhu kamar.</li>
-                        <li><strong>Lampu:</strong> Gunakan lampu tidur bohlam, hindari sinar biru.</li>
-                        <li><strong>Gadget:</strong> Hindari penggunaan layar sebelum tidur.</li>
-                        <li><strong>Kafein:</strong> Hindari minuman berkafein sore/malam hari.</li>
-                        <li><strong>Obat Tidur:</strong> Minimalkan penggunaan.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>Pemantauan dan Evaluasi</h2>
-                    <p>Orang tua/wali dan guru perlu membimbing dan mencontohkan tujuh kebiasaan, serta memantau penerapannya.</p>
-                    <h3>Konsep Utama Pemantauan dan Evaluasi:</h3>
-                    <ul>
-                        <li><strong>Evaluator:</strong> Mengamati dan memastikan anak telah menerapkan kebiasaan.</li>
-                        <li><strong>Pembimbing:</strong> Memberikan umpan balik dan menyusun kesepakatan bersama untuk mendorong penerapan.</li>
-                    </ul>
-                    <h3>Mekanisme Evaluasi (SD Kelas V &amp; VI, SMP, SMA, SMK):</h3>
-                    <ol>
-                        <li><strong>Awal Bulan:</strong> Guru mencetak dan membagikan catatan harian ke murid/orang tua.</li>
-                        <li><strong>Setiap Hari:</strong>
-                            <ul>
-                                <li>Murid menerapkan tujuh kebiasaan.</li>
-                                <li>Guru mengobservasi penerapan di sekolah.</li>
-                                <li>Orang tua/wali mengobservasi penerapan di rumah.</li>
-                                <li>Murid memberi tanda (v) pada kebiasaan yang dilakukan.</li>
-                                <li>Guru/Orang tua/wali memberi validasi.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Akhir Bulan (Opsional, Wajib Akhir Semester):</strong>
-                            <ul>
-                                <li>Murid mengumpulkan catatan harian ke guru.</li>
-                                <li>Orang tua/wali berkonsultasi dengan guru jika penerapan belum maksimal.</li>
-                                <li>Orang tua/wali merefleksikan pembiasaan dan menulis di catatan harian.</li>
-                                <li>Guru merekapitulasi hasil pembiasaan (sudah terbiasa jika minimal 2/3 hari dalam sebulan).</li>
-                                <li>Guru/Murid mengangkat praktik baik penerapan di kelas.</li>
-                            </ul>
-                        </li>
-                    </ol>
-                    <button class="interactive-button" onclick="toggleContent('monitoringForms')">Download Aplikasi Jurnal</button>
-                    <div id="monitoringForms" class="hidden-content">
-                        <h3>List Aplikasi Untuk Android:</h3>
-                        <ul>
-                            <li><a href="https://sites.google.com/guru.smk.belajar.id/sijurkaih/sijurkaih-sistem-jurnal-kaih" target="_blank">Kelas X</a></li>
-                            <li><a href="https://sites.google.com/guru.smk.belajar.id/sijurkaih/sijurkaih-sistem-jurnal-kaih" target="_blank">Kelas XI</a></li>
-                        </ul>
-                        <p><em>Catatan: Bagi Pengguna iPhone Bisa Klik link dibawah</em></p>
-        				<ul>
-                            <li><a href="https://sites.google.com/guru.smk.belajar.id/sijurkaih/sijurkaih-sistem-jurnal-kaih" target="_blank">Kelas X</a></li>
-                            <li><a href="https://sites.google.com/guru.smk.belajar.id/sijurkaih/sijurkaih-sistem-jurnal-kaih" target="_blank">Kelas XI</a></li>
-                        </ul>
-        			</div>
+                   <h2>Pemantauan dan Evaluasi</h2>
+                   <p>Mekanisme pemantauan dilakukan setiap hari oleh siswa, guru, dan orang tua melalui catatan harian atau aplikasi.</p>
+                   <p>Silakan akses tab <strong>"Aplikasi Jurnal"</strong> di atas untuk mengisi kegiatan harian Anda.</p>
                 </section>
 
                 <footer>
-                    <p>&copy; 2025 Gerakan Tujuh Kebiasaan Anak Indonesia Hebat. Semua Hak Dilindungi.</p>
-                    <p>Sumber: Panduan Penerapan Gerakan Tujuh Kebiasaan Anak Indonesia Hebat untuk Guru dan Satuan Pendidikan pada Sekolah Menengah Atas/Kejuruan</p>
+                    <p>&copy; 2025 Gerakan Tujuh Kebiasaan Anak Indonesia Hebat.</p>
                 </footer>
             </div>
+        </div>
 
-            <!-- ORIGINAL FILE (VERBATIM) START
-            --- Salinan persis isi file index.html yang Anda unggah. ---
-            (Anda dapat mengubah teks di antara tag komentar START/END lalu menyimpan file;
-            bagian komentar ini tidak mempengaruhi tampilan, ini hanya referensi cepat.)
-            <!DOCTYPE html>
-            <html lang="id">
-            <head>
-            	<meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Presentasi: Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</title>
-                <style>
-                    body {
-                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                        margin: 0;
-                        padding: 0;
-                        background-color: #f4f4f4;
-                        color: #333;
-                        line-height: 1.6;
-                    }
-                    .container {
-                        max-width: 900px;
-                        margin: 20px auto;
-                        background-color: #fff;
-                        padding: 30px;
-                        border-radius: 8px;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                    }
-                    header {
-                        text-align: center;
-                        padding-bottom: 20px;
-                        border-bottom: 2px solid #4CAF50;
-                        margin-bottom: 30px;
-                    }
-                    header h1 {
-                        color: #2E8B57;
-                        font-size: 2.5em;
-                        margin-bottom: 10px;
-                    }
-                    header p {
-                        color: #666;
-                        font-size: 1.1em;
-                    }
-                    section {
-                        margin-bottom: 40px;
-                        padding: 20px;
-                        background-color: #e8f5e9;
-                        border-left: 5px solid #4CAF50;
-                        border-radius: 5px;
-                    }
-                    section h2 {
-                        color: #4CAF50;
-                        font-size: 1.8em;
-                        margin-top: 0;
-                        margin-bottom: 15px;
-                    }
-                    section h3 {
-                        color: #388E3C;
-                        font-size: 1.4em;
-                        margin-top: 20px;
-                        margin-bottom: 10px;
-                    }
-                    ul {
-                        list-style-type: disc;
-                        margin-left: 20px;
-                        padding-left: 0;
-                    }
-                    ol {
-                        list-style-type: decimal;
-                        margin-left: 20px;
-                        padding-left: 0;
-                    }
-                    li {
-                        margin-bottom: 8px;
-                    }
-                    .highlight {
-                        background-color: #fff9c4;
-                        padding: 5px 10px;
-                        border-radius: 4px;
-                        font-weight: bold;
-                        color: #c09800;
-                    }
-                    .interactive-button {
-                        display: block;
-                        width: fit-content;
-                        margin: 20px auto;
-                        padding: 12px 25px;
-                        background-color: #4CAF50;
-                        color: white;
-                        text-align: center;
-                        border-radius: 5px;
-                        text-decoration: none;
-                        font-size: 1.1em;
-                        cursor: pointer;
-                        transition: background-color 0.3s ease;
-                    }
-                    .interactive-button:hover {
-                        background-color: #45a049;
-                    }
-                    .hidden-content {
-                        display: none;
-                        margin-top: 15px;
-                        padding: 15px;
-                        background-color: #f0f4f0;
-                        border-left: 3px solid #388E3C;
-                        border-radius: 5px;
-                    }
-                    footer {
-                        text-align: center;
-                        padding-top: 20px;
-                        border-top: 1px solid #ddd;
-                        margin-top: 30px;
-                        color: #777;
-                        font-size: 0.9em;
-                    }
-                    .image-container {
-                        text-align: center;
-                        margin: 20px 0;
-                    }
-                    .image-container img {
-                        max-width: 100%;
-                        height: auto;
-                        border-radius: 8px;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <header>
-                        <h1>Gerakan Tujuh Kebiasaan Anak Indonesia Hebat (GiatTKAIH)</h1>
-                        <p>Panduan Penerapan untuk Guru dan Satuan Pendidikan pada Sekolah Menengah Atas/Kejuruan</p>
-                    </header>
-
-                    <!-- ... seluruh isi body Anda asli (dipangkas di komentar ini untuk singkat) ... -->
-
-                </div>
-
-                <script>
-                    function toggleContent(id) {
-                        var element = document.getElementById(id);
-                        if (element.style.display === "none" || element.style.display === "") {
-                            element.style.display = "block";
-                        } else {
-                            element.style.display = "none";
-                        }
-                    }
-                </script>
-            </body>
-            </html>
-            
-        <!-- APLIKASI PANEL: menampilkan halaman web eksternal dalam iframe -->
-       <div id="appPanel" class="panel" role="tabpanel">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h3>Sistem Jurnal KAIH</h3>
-                <p>Silakan isi jurnal kegiatan melalui tampilan di bawah ini.</p>
-                <p style="font-size: 0.9em; color: #666;">
-                    <em>Jika halaman tidak muncul (layar putih), klik tombol di bawah ini:</em>
-                </p>
-                <a href="https://sites.google.com/guru.smk.belajar.id/sijurkaih/sijurkaih-sistem-jurnal-kaih" target="_blank" class="interactive-button" style="display: inline-block; margin: 10px auto;">
-                    Buka Jurnal Full Screen
-                </a>
+        <div id="appPanel" class="panel" role="tabpanel">
+            <h2 style="text-align: center; color: var(--accent); margin-bottom: 15px;">Aplikasi Jurnal Kegiatan</h2>
+            <div class="app-container">
+                <span class="app-loading">Memuat Aplikasi...</span>
+                <iframe 
+                    class="app-frame"
+                    src="https://script.google.com/a/macros/guru.smk.belajar.id/s/AKfycbzBZ6xrXKy0wPkRrQRzZEbtFtma0yGtIqjXhjCmKGmwZ2xxN5ljqDFG_4iPlA_jUiBx/exec"
+                    allowfullscreen
+                    allow="camera; microphone; geolocation" 
+                    style="position: relative; z-index: 1;">
+                </iframe>
             </div>
-
-            <iframe 
-                src="https://sites.google.com/guru.smk.belajar.id/sijurkaih/sijurkaih-sistem-jurnal-kaih" 
-                class="app-frame" 
-                style="width: 100%; height: 80vh; border: 1px solid #ddd; border-radius: 8px;"
-                allowfullscreen>
-            </iframe>
+            <p style="text-align:center; font-size:0.8rem; color:#888; margin-top:10px;">
+                Jika aplikasi tidak muncul, pastikan Anda sudah login ke akun Google (belajar.id) di browser ini.
+            </p>
         </div>
     </div>
 
     <script>
-        // Tab switching logic
+        // 1. Tab Switching Logic
         document.querySelectorAll('.tab').forEach(function(btn){
             btn.addEventListener('click', function(){
                 var panelId = btn.getAttribute('data-panel');
 
-                // tabs
+                // Deactivate all tabs & panels
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                btn.classList.add('active');
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
 
-                // panels
-                document.querySelectorAll('.panel').forEach(p => {
-                    if (p.id === panelId) {
-                        p.classList.add('active');
-                        p.setAttribute('aria-hidden', 'false');
-                    } else {
-                        p.classList.remove('active');
-                        p.setAttribute('aria-hidden', 'true');
-                    }
-                });
+                // Activate clicked tab & target panel
+                btn.classList.add('active');
+                const targetPanel = document.getElementById(panelId);
+                if(targetPanel) {
+                    targetPanel.classList.add('active');
+                }
             });
         });
-		
-		/* ====== Disable right-click and common DevTools shortcuts (added) ======
-            Note: this only raises the barrier for casual users. Determined users
-            can still view source / open DevTools. Keep that in mind.
-            */
-            (function disableInspectAndContextmenu(){
-                // Disable right-click context menu
-                document.addEventListener('contextmenu', function (e) {
-                    try { e.preventDefault(); } catch (err) {}
-                    return false;
-                }, true);
 
-                // Disable selection via keyboard shortcuts (optional)
-                document.addEventListener('selectstart', function(e){
-                    // allow selection normally, but block programmatic context-selection if desired
-                }, true);
-
-                // Block typical keys that open DevTools or view-source
-                document.addEventListener('keydown', function (e) {
-                    try {
-                        // F12
-                        if (e.key === 'F12') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+Shift+I / J / C  (Chrome/Edge)
-                        if (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j' || e.key.toLowerCase() === 'c')) {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+U (view-source / view page source)
-                        if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'u') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+Shift+K (Firefox console)
-                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'k') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Ctrl+Shift+C (element inspector)
-                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
-                            e.preventDefault(); e.stopPropagation(); return false;
-                        }
-                        // Cmd on Mac equivalents
-                        if (navigator.platform && /Mac/i.test(navigator.platform)) {
-                            if (e.metaKey && e.altKey && e.key.toLowerCase() === 'i') { e.preventDefault(); e.stopPropagation(); return false; }
-                        }
-                    } catch (err) { /* ignore */ }
-                }, true);
-
-                // Also try to prevent opening via contextmenu on specific elements (images/links)
-                ['img','a','svg','button','input','textarea'].forEach(tag => {
-                    document.querySelectorAll(tag).forEach(el => {
-                        el.addEventListener('contextmenu', function(e){
-                            try { e.preventDefault(); } catch (err) {}
-                            return false;
-                        }, true);
-                    });
-                });
-
-                // Defensive: periodically re-attach contextmenu block (in case other scripts add handlers)
-                setInterval(() => {
-                    try {
-                        if (!document._ctx_block_attached) {
-                            document.addEventListener('contextmenu', function (e) { try { e.preventDefault(); } catch (z){}; return false; }, true);
-                            document._ctx_block_attached = true;
-                        }
-                    } catch(e){}
-                }, 3000);
-            })();
-
-        
-		// Reuse toggleContent function (same behavior as original)
+        // 2. Toggle Content (Accordion)
         function toggleContent(id) {
             var element = document.getElementById(id);
             if (!element) return;
             if (element.style.display === "none" || element.style.display === "") {
                 element.style.display = "block";
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
                 element.style.display = "none";
             }
         }
+
+        // 3. Security / Anti-Inspect (Sesuai request asli Anda)
+        (function disableInspectAndContextmenu(){
+            // Disable right-click
+            document.addEventListener('contextmenu', function (e) {
+                e.preventDefault(); return false;
+            }, true);
+
+            // Disable DevTools shortcuts
+            document.addEventListener('keydown', function (e) {
+                // F12, Ctrl+Shift+I/J/C, Ctrl+U
+                if (e.key === 'F12' || 
+                   (e.ctrlKey && e.shiftKey && ['i','j','c','k'].includes(e.key.toLowerCase())) ||
+                   (e.ctrlKey && e.key.toLowerCase() === 'u')) {
+                    e.preventDefault(); e.stopPropagation(); return false;
+                }
+            }, true);
+        })();
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
